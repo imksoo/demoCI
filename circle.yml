@@ -1,8 +1,9 @@
 machine:
   timezone: Asia/Tokyo
   environment:
-    TERRAFORM_VERSION: 0.9.1
     PATH: $HOME/.local/bin:$PATH
+    AWS_DEFAULT_REGION: ap-northeast-1 
+    TERRAFORM_VERSION: 0.9.1
 
 dependencies:
   override:
@@ -18,18 +19,19 @@ dependencies:
         rm *.zip
       fi
   post:
-    - aws configure set region ap-northeast-1
+    - aws configure set region ${AWS_DEFAULT_REGION}
   cache_directories:
     - ~/.local/bin
 
 test:
   pre:
-    - |
-      echo "--- test start ---"
-      which aws
-      which terraform
+    - echo "--- test start ---"
   override:
-    - echo "testing..."
+    - |
+      echo "[TEST] AWS CLI is installed."
+      which aws
+      echo "[TEST] Terraform is installed."
+      which terraform
   post:
     - echo "--- test finished ---"
 
