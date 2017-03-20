@@ -14,10 +14,13 @@ deployment:
       - uname -a
   production:
     branch: release/prd
+    commands:
       - uname -a
   staging:
     branch: release/stg
+    commands:
       - uname -a
   development:
     branch: release/dev
+    commands:
       - uname -a
