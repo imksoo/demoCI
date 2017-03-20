@@ -49,15 +49,9 @@ test:
         export TF_BUCKET_NAME="kirino-minato-aws03-terraform"
         export TF_DIRECTORY_PATH=terraform/environment/production
       fi
-    - |
       cd ${TF_DIRECTORY_PATH}
-      pwd
       terraform remote config -backend=s3 -backend-config="bucket=${TF_BUCKET_NAME}" -backend-config='key=tfstate/terraform.tfstate'
-    - |
-      pwd
       terraform get -update
-    - |
-      pwd
       terraform plan
   post:
     - echo "--- test finished ---"
