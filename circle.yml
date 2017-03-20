@@ -21,7 +21,7 @@ dependencies:
   post:
     - aws configure set region ${AWS_DEFAULT_REGION}
   cache_directories:
-    - ~/.local/bin
+    - ~/.local/
 
 test:
   pre:
