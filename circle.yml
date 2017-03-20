@@ -8,6 +8,7 @@ machine:
 dependencies:
   override:
     - |
+      sudo pip install awscli --user
       if [[ ! -f ~/.local/bin/terraform ]]; then
         mkdir -p ~/.local/bin
         (
@@ -17,13 +18,10 @@ dependencies:
           rm *.zip
         )
       fi
-      if [[ ! -f ~/.local/bin/aws ]]; then
-        pip install awscli --user
-      fi
   post:
     - aws configure set region ${AWS_DEFAULT_REGION}
   cache_directories:
-    - ~/.local/
+    - ~/.local/bin
 
 test:
   pre:
