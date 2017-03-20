@@ -7,6 +7,14 @@ dependencies:
   post:
     - aws configure set region ap-northeast-1
 
+test:
+  pre:
+    - echo "--- test start ---"
+  override:
+    - echo "testing..."
+  post:
+    - echo "--- test finished ---"
+
 deployment:
   test:
     branch: master
