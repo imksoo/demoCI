@@ -65,7 +65,11 @@ deployment:
     branch: environment/production
     commands:
       - |
-        cd terraform/${CIRCLE_BRANCH}
+        export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_PRD}
+        export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_PRD}
+        export TF_BUCKET_NAME="kirino-minato-aws03-terraform"
+        export TF_DIRECTORY_PATH=terraform/environment/production
+        cd ${TF_DIRECTORY_PATH}
         terraform get -update
         terraform apply
         terraform remote push
@@ -73,7 +77,11 @@ deployment:
     branch: environment/staging
     commands:
       - |
-        cd terraform/${CIRCLE_BRANCH}
+        export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_STG}
+        export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_STG}
+        export TF_BUCKET_NAME="kirino-minato-aws02-terraform"
+        export TF_DIRECTORY_PATH=terraform/environment/staging
+        cd ${TF_DIRECTORY_PATH}
         terraform get -update
         terraform apply
         terraform remote push
