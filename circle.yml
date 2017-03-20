@@ -49,9 +49,9 @@ test:
         TF_BUCKET_NAME="kirino-minato-aws03-terraform"
         cd terraform/environment/production
       fi
-      echo terraform remote config -backend=s3 -backend-config="bucket=${TF_BUCKET_NAME}" -backend-config='key=tfstate/terraform.tfstate'
-      echo terraform get -update
-      echo terraform plan
+      terraform remote config -backend=s3 -backend-config="bucket=${TF_BUCKET_NAME}" -backend-config='key=tfstate/terraform.tfstate'
+      terraform get -update
+      terraform plan
   post:
     - echo "--- test finished ---"
 
