@@ -7,7 +7,6 @@ dependencies:
   override:
     - |
       sudo pip install awscli
-      ls -alR ~
       if [[ ! -f ~/.local/bin/terraform ]]; then
         mkdir -p ~/.local/bin
         cd ~/.local/bin
@@ -22,7 +21,10 @@ dependencies:
 
 test:
   pre:
-    - echo "--- test start ---"
+    - |
+      echo "--- test start ---"
+      which aws
+      which terraform
   override:
     - echo "testing..."
   post:
