@@ -50,7 +50,7 @@ test:
         export TF_DIRECTORY_PATH=terraform/environment/production
       fi
       cd ${TF_DIRECTORY_PATH}
-      terraform remote config -backend=s3 -backend-config="bucket=${TF_BUCKET_NAME}" -backend-config='key=tfstate/terraform.tfstate'
+      terraform init -backend=s3 -backend-config="bucket=${TF_BUCKET_NAME}" -backend-config='key=tfstate/terraform.tfstate'
       terraform get -update
       terraform plan
   post:
@@ -70,6 +70,7 @@ deployment:
         export TF_BUCKET_NAME="kirino-minato-aws03-terraform"
         export TF_DIRECTORY_PATH=terraform/environment/production
         cd ${TF_DIRECTORY_PATH}
+        terraform init -backend=s3 -backend-config="bucket=${TF_BUCKET_NAME}" -backend-config='key=tfstate/terraform.tfstate'
         terraform get -update
         terraform apply
         terraform remote push
@@ -82,6 +83,7 @@ deployment:
         export TF_BUCKET_NAME="kirino-minato-aws02-terraform"
         export TF_DIRECTORY_PATH=terraform/environment/staging
         cd ${TF_DIRECTORY_PATH}
+        terraform init -backend=s3 -backend-config="bucket=${TF_BUCKET_NAME}" -backend-config='key=tfstate/terraform.tfstate'
         terraform get -update
         terraform apply
         terraform remote push
