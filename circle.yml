@@ -31,6 +31,15 @@ test:
     - |
       echo "[TEST] Terraform is installed."
       which terraform
+    - |
+      if [[ "${CIRCLE_BRANCH}" = "master" ]]; then
+        true
+      elif
+        cd env/${CIRCLE_BRANCH}
+        terraform remote config -backend=s3 -backend-config="bucket=${BUCKET_NAME}" -backend-config='key=${CIRCLE_BRANCH}/terraform.tfstate'
+        terraform get -update
+        terraform plan
+      fi
   post:
     - echo "--- test finished ---"
 
@@ -42,16 +51,48 @@ deployment:
   env-proxy-prd:
     branch: release/env-proxy-prd
     commands:
-      - uname -a
+      - |
+        cd env/${CIRCLE_BRANCH}
+        terraform get -update
+        terraform apply
+        terraform remote push
   env-proxy-stg:
     branch: release/env-proxy-stg
     commands:
-      - uname -a
+      - |
+        cd env/${CIRCLE_BRANCH}
+        terraform get -update
+        terraform apply
+        terraform remote push
   env-infra-prd:
     branch: release/env-infra-prd
     commands:
-      - uname -a
+      - |
+        cd env/${CIRCLE_BRANCH}
+        terraform get -update
+        terraform apply
+        terraform remote push
   env-infra-stg:
-    branch: relase/env-infra-stg
+    branch: release/env-infra-stg
     commands:
-      - uname -a
+      - |
+        cd env/${CIRCLE_BRANCH}
+        terraform get -update
+        terraform apply
+        terraform remote push
+  env-website01-prd:
+    branch: release/env-website01-prd
+    commands:
+      - |
+        cd env/${CIRCLE_BRANCH}
+        terraform get -update
+        terraform apply
+        terraform remote push
+  env-website01-stg:
+    branch: release/env-website01-stg
+    commands:
+      - |
+        cd env/${CIRCLE_BRANCH}
+        terraform get -update
+        terraform apply
+        terraform remote push
