@@ -8,7 +8,7 @@ machine:
   timezone: Asia/Tokyo
   environment:
     PATH: $HOME/.local/bin:$PATH
-    AWS_DEFAULT_REGION: ap-northeast-1 
+    AWS_DEFAULT_REGION: us-west-2
     TERRAFORM_VERSION: 0.9.1
 
 dependencies:
@@ -31,7 +31,7 @@ dependencies:
       aws configure set region ${AWS_DEFAULT_REGION} --profile piano-proxy-dev01
       aws configure set region ${AWS_DEFAULT_REGION} --profile piano-proxy-stg01
       aws configure set region ${AWS_DEFAULT_REGION} --profile piano-proxy-prd01
-      
+
       # Setup Terraform
       if [[ ! -f ~/.local/bin/terraform ]]; then
         mkdir -p ~/.local/bin
