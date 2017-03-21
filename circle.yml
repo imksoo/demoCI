@@ -15,7 +15,7 @@ dependencies:
   override:
     - |
       # Setup AWS CLI
-      sudo pip install awscli
+      #sudo pip install awscli
     - |
       # Configure region
       aws configure set default.region ${AWS_DEFAULT_REGION}
@@ -51,19 +51,19 @@ dependencies:
 test:
   override:
     - |
-      echo "[TEST] AWS CLI is installed."
+      # [TEST] AWS CLI is installed.
       which aws
     - |
-      echo "[TEST] AWS Credentials."
+      # [TEST] AWS Credentials.
       aws configure list
       aws configure list --profile piano-proxy-dev01
       aws configure list --profile piano-proxy-stg01
       aws configure list --profile piano-proxy-prd01
     - |
-      echo "[TEST] Terraform is installed."
+      # [TEST] Terraform is installed.
       which terraform
     - |
-      echo "[TEST] Terraform plan"
+      # [TEST] Terraform plan
       case ${CIRCLE_BRANCH} in
         "environment/development")
           [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test ) || true
@@ -90,14 +90,17 @@ deployment:
     branch: environment/production
     commands:
       - |
+        # [DEPLOY] Terraform apply
         [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make deploy ) || true
   staging:
     branch: environment/staging
     commands:
       - |
+        # [DEPLOY] Terraform apply
         [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make deploy ) || true
   development:
     branch: environment/development
     commands:
       - |
+        # [DEPLOY] Terraform apply
         [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make deploy ) || true
