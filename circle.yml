@@ -38,21 +38,22 @@ test:
       echo "[TEST] Terraform is installed."
       which terraform
     - |
-      if [[ "${CIRCLE_BRANCH}" = "master" || "${CIRCLE_BRANCH}" = "environment/staging" ]]; then
-        export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_STG}
-        export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_STG}
-        export TF_BUCKET_NAME="kirino-minato-aws02-terraform"
-        export TF_DIRECTORY_PATH=terraform/environment/staging
-      elif [[ "${CIRCLE_BRANCH}" = "environment/production" ]]; then
-        export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_PRD}
-        export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_PRD}
-        export TF_BUCKET_NAME="kirino-minato-aws03-terraform"
-        export TF_DIRECTORY_PATH=terraform/environment/production
-      fi
-      cd ${TF_DIRECTORY_PATH}
-      terraform init -backend=s3 -backend-config="bucket=${TF_BUCKET_NAME}" -backend-config='key=tfstate/terraform.tfstate'
-      terraform get -update
-      terraform plan
+      case "${CIRCLE_BRANCH}" in
+        "environment/production")
+          [ -d environment/production ]  && ( cd environment/production  ; make test )
+          break ;;
+        "environment/staging")
+          [ -d environment/staging ]     && ( cd environment/staging     ; make test )
+          break ;;
+        "environment/development")
+          [ -d environment/development ] && ( cd environment/development ; make test )
+          break ;;
+        "master")
+          [ -d environment/development ] && ( cd environment/development ; make test )
+          [ -d environment/staging ]     && ( cd environment/staging     ; make test )
+          [ -d environment/production ]  && ( cd environment/production  ; make test )
+          break ;;
+      esac
   post:
     - echo "--- test finished ---"
 
@@ -65,25 +66,14 @@ deployment:
     branch: environment/production
     commands:
       - |
-        export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_PRD}
-        export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_PRD}
-        export TF_BUCKET_NAME="kirino-minato-aws03-terraform"
-        export TF_DIRECTORY_PATH=terraform/environment/production
-        cd ${TF_DIRECTORY_PATH}
-        terraform init -backend=s3 -backend-config="bucket=${TF_BUCKET_NAME}" -backend-config='key=tfstate/terraform.tfstate'
-        terraform get -update
-        terraform apply
-        terraform remote push
+        [ -d environment/production ]  && ( cd environment/production  ; make deploy )
   staging:
     branch: environment/staging
     commands:
       - |
-        export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_STG}
-        export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_STG}
-        export TF_BUCKET_NAME="kirino-minato-aws02-terraform"
-        export TF_DIRECTORY_PATH=terraform/environment/staging
-        cd ${TF_DIRECTORY_PATH}
-        terraform init -backend=s3 -backend-config="bucket=${TF_BUCKET_NAME}" -backend-config='key=tfstate/terraform.tfstate'
-        terraform get -update
-        terraform apply
-        terraform remote push
+        [ -d environment/staging ]     && ( cd environment/staging     ; make deploy )
+  development:
+    branch: environment/development
+    commands:
+      - |
+        [ -d environment/development ] && ( cd environment/development ; make deploy )
