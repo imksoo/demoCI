@@ -61,22 +61,26 @@ test:
       which terraform
     - |
       echo "[TEST] Terraform plan"
-      case ${CIRCLE_BRANCH} in
-        "environment/development")
-          [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test )
-          ;;
-        "environment/staging")
-          [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test )
-          ;;
-        "environment/production")
-          [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test )
-          ;;
-        "master")
-          [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test )
-          [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test )
-          [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test )
-          ;;
-      esac
+      #case ${CIRCLE_BRANCH} in
+      #  "environment/development")
+      #    [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test )
+      #    ;;
+      #  "environment/staging")
+      #    [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test )
+      #    ;;
+      #  "environment/production")
+      #    [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test )
+      #    ;;
+      #  "master")
+      #    [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test )
+      #    [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test )
+      #    [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test )
+      #    ;;
+      #esac
+      set +xv
+      cd Terraform/environment/development
+      make -n test
+      make test
 
 deployment:
   master:
