@@ -28,8 +28,6 @@ dependencies:
     - ~/.local/bin
 
 test:
-  pre:
-    - echo "--- test start ---"
   override:
     - |
       echo "[TEST] AWS CLI is installed."
@@ -41,7 +39,7 @@ test:
       echo "[TEST] Terraform plan"
       set +xv
       make love
-      case "${CIRCLE_BRANCH}" in
+      case ${CIRCLE_BRANCH} in
         "environment/production")
           #[ -d environment/production ]  && ( cd environment/production  ; make test )
           ;;
@@ -52,13 +50,9 @@ test:
           #[ -d environment/development ] && ( cd environment/development ; make test )
           ;;
         "master")
-          [ -d environment/development ] && ( cd environment/development ; make love )
-          [ -d environment/staging ]     && ( cd environment/staging     ; make love )
-          [ -d environment/production ]  && ( cd environment/production  ; make love )
+          cd environment/development; make test
           ;;
       esac
-  post:
-    - echo "--- test finished ---"
 
 deployment:
   master:
