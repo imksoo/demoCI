@@ -51,11 +51,13 @@ test:
       echo "[TEST] AWS CLI is installed."
       which aws
     - |
+      echo "[TEST] AWS Credentials."
+      aws configure list
+    - |
       echo "[TEST] Terraform is installed."
       which terraform
     - |
       echo "[TEST] Terraform plan"
-      set +xv
       case ${CIRCLE_BRANCH} in
         "environment/development")
           [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test )
