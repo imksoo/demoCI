@@ -1,0 +1,26 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create IAM user for CircleCI
+Resources:
+  IAMUserCircleCI:
+    Type: AWS::IAM::User
+    Properties:
+      Path: /
+      UserName: circleci
+  IAMUserAddToGroup:
+    Type: AWS::IAM::UserToGroupAddition
+    Properties:
+      GroupName: Administrators
+      Users:
+        - Ref: IAMUserCircleCI
+  IAMUserAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName:
+        Ref: IAMUserCircleCI
+Outputs:
+  IAMUserCircleCIAccessKey:
+    Value: 
+      Ref: IAMUserAccessKey
+  IAMUserCircleCISecretKey:
+    Value: !GetAtt IAMUserAccessKey.SecretAccessKey
