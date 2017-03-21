@@ -14,7 +14,25 @@ machine:
 dependencies:
   override:
     - |
+      # Setup AWS CLI
       sudo pip install awscli
+      # Configure region
+      aws configure set default.region ${AWS_DEFAULT_REGION}
+      
+      # Configure AWS Keys
+      aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID_DEV} --profile piano-proxy-dev01
+      aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID_STG} --profile piano-proxy-stg01
+      aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID_PRD} --profile piano-proxy-prd01
+
+      aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY_DEV} --profile piano-proxy-dev01
+      aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY_STG} --profile piano-proxy-stg01
+      aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY_PRD} --profile piano-proxy-prd01
+
+      aws configure set region ${AWS_DEFAULT_REGION} --profile piano-proxy-dev01
+      aws configure set region ${AWS_DEFAULT_REGION} --profile piano-proxy-stg01
+      aws configure set region ${AWS_DEFAULT_REGION} --profile piano-proxy-prd01
+      
+      # Setup Terraform
       if [[ ! -f ~/.local/bin/terraform ]]; then
         mkdir -p ~/.local/bin
         (
