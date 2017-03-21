@@ -16,22 +16,25 @@ dependencies:
     - |
       # Setup AWS CLI
       sudo pip install awscli
+    - |
       # Configure region
       aws configure set default.region ${AWS_DEFAULT_REGION}
-      
-      # Configure AWS Keys
+    - |
+      # Configure AWS access keys - piano-proxy-dev01
       aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID_DEV} --profile piano-proxy-dev01
-      aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID_STG} --profile piano-proxy-stg01
-      aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID_PRD} --profile piano-proxy-prd01
-
       aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY_DEV} --profile piano-proxy-dev01
-      aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY_STG} --profile piano-proxy-stg01
-      aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY_PRD} --profile piano-proxy-prd01
-
       aws configure set region ${AWS_DEFAULT_REGION} --profile piano-proxy-dev01
+    - |
+      # Configure AWS access keys - piano-proxy-stg01
+      aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID_STG} --profile piano-proxy-stg01
+      aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY_STG} --profile piano-proxy-stg01
       aws configure set region ${AWS_DEFAULT_REGION} --profile piano-proxy-stg01
+    - |
+      # Configure AWS access keys - piano-proxy-prd01
+      aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID_PRD} --profile piano-proxy-prd01
+      aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY_PRD} --profile piano-proxy-prd01
       aws configure set region ${AWS_DEFAULT_REGION} --profile piano-proxy-prd01
-
+    - |
       # Setup Terraform
       if [[ ! -f ~/.local/bin/terraform ]]; then
         mkdir -p ~/.local/bin
@@ -61,26 +64,22 @@ test:
       which terraform
     - |
       echo "[TEST] Terraform plan"
-      #case ${CIRCLE_BRANCH} in
-      #  "environment/development")
-      #    [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test )
-      #    ;;
-      #  "environment/staging")
-      #    [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test )
-      #    ;;
-      #  "environment/production")
-      #    [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test )
-      #    ;;
-      #  "master")
-      #    [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test )
-      #    [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test )
-      #    [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test )
-      #    ;;
-      #esac
-      set +xv
-      cd Terraform/environment/development
-      make -n test
-      make test
+      case ${CIRCLE_BRANCH} in
+        "environment/development")
+          [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test ) || true
+          ;;
+        "environment/staging")
+          [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test ) || true
+          ;;
+        "environment/production")
+          [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test ) || true
+          ;;
+        "master")
+          [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test ) || true
+          [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test ) || true
+          [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test ) || true
+          ;;
+      esac
 
 deployment:
   master:
@@ -91,14 +90,14 @@ deployment:
     branch: environment/production
     commands:
       - |
-        [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make deploy )
+        [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make deploy ) || true
   staging:
     branch: environment/staging
     commands:
       - |
-        [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make deploy )
+        [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make deploy ) || true
   development:
     branch: environment/development
     commands:
       - |
-        [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make deploy )
+        [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make deploy ) || true
