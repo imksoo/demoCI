@@ -41,18 +41,18 @@ test:
       case "${CIRCLE_BRANCH}" in
         "environment/production")
           [ -d environment/production ]  && ( cd environment/production  ; make test )
-          break ;;
+          ;;
         "environment/staging")
           [ -d environment/staging ]     && ( cd environment/staging     ; make test )
-          break ;;
+          ;;
         "environment/development")
           [ -d environment/development ] && ( cd environment/development ; make test )
-          break ;;
+          ;;
         "master")
           [ -d environment/development ] && ( cd environment/development ; make test )
           [ -d environment/staging ]     && ( cd environment/staging     ; make test )
           [ -d environment/production ]  && ( cd environment/production  ; make test )
-          break ;;
+          ;;
       esac
   post:
     - echo "--- test finished ---"
