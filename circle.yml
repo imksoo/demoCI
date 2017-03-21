@@ -39,8 +39,7 @@ test:
       which terraform
     - |
       echo "[TEST] Terraform plan"
-      env
-      pwd
+      set +xv
       make love
       case "${CIRCLE_BRANCH}" in
         "environment/production")
@@ -53,9 +52,9 @@ test:
           #[ -d environment/development ] && ( cd environment/development ; make test )
           ;;
         "master")
-          #[ -d environment/development ] && ( cd environment/development ; make test )
-          #[ -d environment/staging ]     && ( cd environment/staging     ; make test )
-          #[ -d environment/production ]  && ( cd environment/production  ; make test )
+          [ -d environment/development ] && ( cd environment/development ; make love )
+          [ -d environment/staging ]     && ( cd environment/staging     ; make love )
+          [ -d environment/production ]  && ( cd environment/production  ; make love )
           ;;
       esac
   post:
