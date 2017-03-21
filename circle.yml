@@ -38,19 +38,20 @@ test:
     - |
       echo "[TEST] Terraform plan"
       set +xv
-      make love
       case ${CIRCLE_BRANCH} in
-        "environment/production")
-          #[ -d environment/production ]  && ( cd environment/production  ; make test )
+        "environment/development")
+          [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test )
           ;;
         "environment/staging")
-          #[ -d environment/staging ]     && ( cd environment/staging     ; make test )
+          [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test )
           ;;
-        "environment/development")
-          #[ -d environment/development ] && ( cd environment/development ; make test )
+        "environment/production")
+          [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test )
           ;;
         "master")
-          cd environment/development; make test
+          [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test )
+          [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test )
+          [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test )
           ;;
       esac
 
@@ -63,14 +64,14 @@ deployment:
     branch: environment/production
     commands:
       - |
-        [ -d environment/production ]  && ( cd environment/production  ; make deploy )
+        [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make deploy )
   staging:
     branch: environment/staging
     commands:
       - |
-        [ -d environment/staging ]     && ( cd environment/staging     ; make deploy )
+        [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make deploy )
   development:
     branch: environment/development
     commands:
       - |
-        [ -d environment/development ] && ( cd environment/development ; make deploy )
+        [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make deploy )
