@@ -53,6 +53,9 @@ test:
     - |
       echo "[TEST] AWS Credentials."
       aws configure list
+      aws configure list --profile piano-proxy-dev01
+      aws configure list --profile piano-proxy-stg01
+      aws configure list --profile piano-proxy-prd01
     - |
       echo "[TEST] Terraform is installed."
       which terraform
