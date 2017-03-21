@@ -38,6 +38,9 @@ test:
       echo "[TEST] Terraform is installed."
       which terraform
     - |
+      echo "[TEST] Terraform plan"
+      env
+      pwd
       case "${CIRCLE_BRANCH}" in
         "environment/production")
           [ -d environment/production ]  && ( cd environment/production  ; make test )
