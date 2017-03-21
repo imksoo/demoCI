@@ -1,0 +1,45 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: S3 Bucket and DynamoDB for Terraform state files.
+Parameters:
+  S3BucketName:
+    Type: String
+    Description: Bucket name
+    MinLength: 3
+    MaxLength: 63
+    AllowedPattern: "[a-z0-9][a-zA-Z0-9.-]+"
+  DynamoDBTableName:
+    Type: String
+    Description: Table name
+    MinLength: 3
+    MaxLength: 63
+    AllowedPattern: "[a-zA-Z0-9][a-zA-Z0-9.-]+"
+    Default: TerraformStateLockTable
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Ref: S3BucketName
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Name
+          Value: !Sub |-
+            Terraform backend S3 bucket for ${AWS::AccountId} by ${AWS::StackName}.
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName:
+        Ref: DynamoDBTableName
+      ProvisionedThroughput:
+        ReadCapacityUnits: 10
+        WriteCapacityUnits: 10
+      AttributeDefinitions:
+        -
+          AttributeName: "LockID"
+          AttributeType: "S"
+      KeySchema:
+        -
+          AttributeName: "LockID"
+          KeyType: "HASH"
