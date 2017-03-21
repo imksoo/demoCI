@@ -41,20 +41,21 @@ test:
       echo "[TEST] Terraform plan"
       env
       pwd
+      make love
       case "${CIRCLE_BRANCH}" in
         "environment/production")
-          [ -d environment/production ]  && ( cd environment/production  ; make test )
+          #[ -d environment/production ]  && ( cd environment/production  ; make test )
           ;;
         "environment/staging")
-          [ -d environment/staging ]     && ( cd environment/staging     ; make test )
+          #[ -d environment/staging ]     && ( cd environment/staging     ; make test )
           ;;
         "environment/development")
-          [ -d environment/development ] && ( cd environment/development ; make test )
+          #[ -d environment/development ] && ( cd environment/development ; make test )
           ;;
         "master")
-          [ -d environment/development ] && ( cd environment/development ; make test )
-          [ -d environment/staging ]     && ( cd environment/staging     ; make test )
-          [ -d environment/production ]  && ( cd environment/production  ; make test )
+          #[ -d environment/development ] && ( cd environment/development ; make test )
+          #[ -d environment/staging ]     && ( cd environment/staging     ; make test )
+          #[ -d environment/production ]  && ( cd environment/production  ; make test )
           ;;
       esac
   post:
