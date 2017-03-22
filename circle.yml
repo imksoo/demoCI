@@ -106,3 +106,4 @@ deployment:
       - |
         # [DEPLOY] Terraform apply
         [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make deploy ) || true
+
