@@ -85,7 +85,9 @@ deployment:
   master:
     branch: master
     commands:
-      - uname -a
+      - |
+        # [DEPLOY] branch master does not any deployment.
+        echo "Test stage is all succeeded."
   production:
     branch: environment/production
     commands:
@@ -104,3 +106,4 @@ deployment:
       - |
         # [DEPLOY] Terraform apply
         [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make deploy ) || true
+

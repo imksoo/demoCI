@@ -8,3 +8,13 @@ terraform {
     lock_table = "TerraformStateLockTable"
   }
 }
+
+provider "aws" {
+  region       = "us-west-2"
+  profile      = "piano-proxy-dev01"
+}
+
+resource "aws_codecommit_repository" "test" {
+  repository_name = "testrepo"
+  description     = "testrepo"
+}
