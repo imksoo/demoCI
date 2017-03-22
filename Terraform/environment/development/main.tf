@@ -13,3 +13,7 @@ provider "aws" {
   region       = "us-west-2"
   profile      = "piano-proxy-dev01"
 }
+
+module "vpc_subnet" {
+  source = "../../modules/vpc-subnet"
+}
