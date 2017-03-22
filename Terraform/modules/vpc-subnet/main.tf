@@ -9,7 +9,7 @@ resource "aws_vpc" "vpc" {
 }
 
 resource "aws_default_network_acl" "network_acl" {
-    default_network_acl_id = "${aws_vpc.vpc}"
+    default_network_acl_id = "${aws_vpc.vpc.default_network_acl_id}"
     ingress {
         rule_no = 100
         protocol = -1
@@ -32,7 +32,7 @@ resource "aws_default_network_acl" "network_acl" {
 }
 
 resource "aws_subnet" "subnet" {
-    vpc_id = "${aws_vpc.vpc}"
+    vpc_id = "${aws_vpc.vpc.id}"
     cidr_block = "${var.vpc_cidr[count.index]}"
     availability_zone = "${var.vpc_az_list[count.index]}"
     count = "${length(var.vpc_subnet_cidr_list)}"
