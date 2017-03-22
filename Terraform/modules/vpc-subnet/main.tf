@@ -39,6 +39,6 @@ resource "aws_subnet" "subnet" {
     map_public_ip_on_launch = "${var.assign_public_ip}"
     assign_ipv6_address_on_creation = "${var.assign_public_ipv6}"
     tags {
-        Name = "Subnet-${var.name}-${var.vpc_az_list[count.index]}"
+        Name = "Subnet-${var.vpc_name}-${var.vpc_az_list[count.index]}"
     }
 }
