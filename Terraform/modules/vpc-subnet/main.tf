@@ -44,7 +44,7 @@ resource "aws_subnet" "subnet" {
 }
 
 resource "aws_route_table" "route_table" {
-    vpc_id = "${aws_vpc.vpc_id}"
+    vpc_id = "${aws_vpc.vpc.id}"
     tags {
         Name = "RT-${var.vpc_name}"
     }
