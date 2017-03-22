@@ -33,12 +33,25 @@ resource "aws_default_network_acl" "network_acl" {
 
 resource "aws_subnet" "subnet" {
     vpc_id = "${aws_vpc.vpc.id}"
-    cidr_block = "${var.vpc_cidr[count.index]}"
-    availability_zone = "${var.vpc_az_list[count.index]}"
     count = "${length(var.vpc_subnet_cidr_list)}"
+    availability_zone = "${var.vpc_az_list[count.index]}"
+    cidr_block = "${var.vpc_subnet_cidr_list[count.index]}"
     map_public_ip_on_launch = "${var.assign_public_ip}"
     assign_ipv6_address_on_creation = "${var.assign_public_ipv6}"
     tags {
-        Name = "Subnet-${var.vpc_name}-${var.vpc_az_list[count.index]}"
+        Name = "Subnet-${var.vpc_name}-${var.vpc_subnet_cidr_list[count.index]}"
     }
+}
+
+resource "aws_route_table" "route_table" {
+    vpc_id = "${aws_vpc.vpc_id}"
+    tags {
+        Name = "RT-${var.vpc_name}"
+    }
+}
+
+resource "aws_route_table_association" "route_table_subnet" {
+    count = "${length(var.vpc_subnet_cidr_list)}"
+    subnet_id = "${element(aws_subnet.subnet.*.id, count.index)}"
+    route_table_id = "${aws_route_table.route_table.id}"
 }
