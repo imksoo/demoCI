@@ -7,7 +7,7 @@ variable "vpc_cidr" {
 }
 
 variable "vpc_subnet_cidr_list" {
-  default = ["10.123.1.0/24", "10.123.2.0/24", "10.123.99.0/24"]
+  default = ["10.123.1.0/24", "10.123.2.0/24", "10.123.3.0/24"]
 }
 
 variable "vpc_az_list" {
