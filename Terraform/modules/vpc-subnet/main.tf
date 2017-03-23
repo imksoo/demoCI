@@ -57,25 +57,25 @@ resource "aws_default_security_group" "vpc_default_sg" {
 
 resource "aws_security_group" "sg_linux_default" {
   vpc_id      = "${aws_vpc.vpc.id}"
-  name        = "sg-linux-default"
-  description = "sg-linux-default"
+  name        = "linux-default"
+  description = "linux-default"
 
   tags {
-    Name = "sg-linux-default"
+    Name = "linux-default"
   }
 
   # Inbound ICMP (ping, traceroute, etc / only private networks)
   ingress {
     protocol    = "icmp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-    from_port   = 0
-    to_port     = 0
+    cidr_blocks = ["10.0.0.0/8"]
+    from_port   = -1
+    to_port     = -1
   }
 
   # Inbound SSH
   ingress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/8", "0.0.0.0/0"]
     from_port   = 22
     to_port     = 22
   }
@@ -84,8 +84,8 @@ resource "aws_security_group" "sg_linux_default" {
   egress {
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
-    from_port   = 0
-    to_port     = 0
+    from_port   = -1
+    to_port     = -1
   }
 
   # Outbound SSH
@@ -139,25 +139,25 @@ resource "aws_security_group" "sg_linux_default" {
 
 resource "aws_security_group" "sg_windows_default" {
   vpc_id      = "${aws_vpc.vpc.id}"
-  name        = "sg-windows-default"
-  description = "sg-windows-default"
+  name        = "windows-default"
+  description = "windows-default"
 
   tags {
-    Name = "sg-windows-default"
+    Name = "windows-default"
   }
 
   # Inbound ICMP (ping, traceroute, etc / only private networks)
   ingress {
     protocol    = "icmp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-    from_port   = 0
-    to_port     = 0
+    cidr_blocks = ["10.0.0.0/8"]
+    from_port   = -1
+    to_port     = -1
   }
 
   # Inbound WinRM (5985=Over HTTP, 5986=Over HTTPS / only private networks)
   ingress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 5985
     to_port     = 5986
   }
@@ -165,7 +165,7 @@ resource "aws_security_group" "sg_windows_default" {
   # Inbound RDP
   ingress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/8", "0.0.0.0/0"]
     from_port   = 3389
     to_port     = 3389
   }
@@ -174,8 +174,8 @@ resource "aws_security_group" "sg_windows_default" {
   egress {
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
-    from_port   = 0
-    to_port     = 0
+    from_port   = -1
+    to_port     = -1
   }
 
   # Outbound Ports
@@ -217,129 +217,122 @@ resource "aws_security_group" "sg_windows_default" {
     from_port   = 443
     to_port     = 443
   }
-  # Outbound HTTPS
-  egress {
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    from_port   = 443
-    to_port     = 443
-  }
   # Outbound LDAP (tcp)
   egress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 389
     to_port     = 389
   }
   # Outbound LDAP (udp)
   egress {
     protocol    = "udp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 389
     to_port     = 389
   }
   # Outbound LDAP SSL
   egress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 636
     to_port     = 636
   }
   # Outbound LDAP GC / LDAP GC SSL
-  egress {
-    protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-    from_port   = 3268
-    to_port     = 3269
-  }
+  #egress {
+  #  protocol    = "tcp"
+  #  cidr_blocks = ["10.0.0.0/8"]
+  #  from_port   = 3268
+  #  to_port     = 3269
+  #}
   # Outbound Kerberos (tcp)
   egress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 88
     to_port     = 88
   }
   # Outbound Kerberos (udp)
   egress {
     protocol    = "udp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 88
     to_port     = 88
   }
   # Outbound SMB,CIFS,DFSN,LSARPC,NbtSS,NetLogonR,SamR,SrvSvc (tcp)
   egress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 445
     to_port     = 445
   }
   # Outbound SMB,CIFS,DFSN,LSARPC,NbtSS,NetLogonR,SamR,SrvSvc (udp)
   egress {
     protocol    = "udp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 445
     to_port     = 445
   }
   # Outbound SMTP(Replication)
   egress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 25
     to_port     = 25
   }
   # Outbound TCP dynamic ports (1024-65535)
   egress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 1024
     to_port     = 65535
   }
   # Outbound Kerberos change/set password (tcp)
   egress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 464
     to_port     = 464
   }
   # Outbound Kerberos change/set password (udp)
   egress {
     protocol    = "udp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 464
     to_port     = 464
   }
   # Outbound UDP dynamic ports (1024-65535)
   egress {
     protocol    = "udp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 1024
     to_port     = 65535
   }
   # Outbound DFS, Group Policy
   egress {
     protocol    = "udp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 138
     to_port     = 138
   }
   # Outbound SOAP
-  egress {
-    protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
-    from_port   = 9389
-    to_port     = 9389
-  }
+  #egress {
+  #  protocol    = "tcp"
+  #  cidr_blocks = ["10.0.0.0/8"]
+  #  from_port   = 9389
+  #  to_port     = 9389
+  #}
   # Outbound NetLogon,NetBIOS,Name Resolution
   egress {
     protocol    = "udp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 137
     to_port     = 137
   }
   # Outbound DFSN,NetBIOS Session Service,NetLogon
   egress {
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+    cidr_blocks = ["10.0.0.0/8"]
     from_port   = 139
     to_port     = 139
   }
@@ -360,7 +353,7 @@ resource "aws_subnet" "subnet" {
 
 resource "aws_route_table" "rt" {
   vpc_id           = "${aws_vpc.vpc.id}"
-  propagating_vgws = ["${aws_vpn_gateway.vpn-gw.id}"]
+  propagating_vgws = ["${aws_vpn_gateway.vpn_gw.id}"]
 
   tags {
     Name = "RT-${var.vpc_name}"
@@ -403,7 +396,7 @@ resource "aws_vpc_endpoint_route_table_association" "s3_endpoint" {
   route_table_id  = "${aws_route_table.rt.id}"
 }
 
-resource "aws_vpn_gateway" "vpn-gw" {
+resource "aws_vpn_gateway" "vpn_gw" {
   vpc_id = "${aws_vpc.vpc.id}"
   count  = "${lookup(map(var.create_vpn_gateway, 1), "true", 0)}"
 
