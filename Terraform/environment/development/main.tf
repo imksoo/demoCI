@@ -18,3 +18,7 @@ module "vpc_subnet" {
   source = "../../modules/vpc-subnet"
 }
 
+resource "aws_key_pair" "keypair" {
+  key_name   = "KEY-piano-proxy-dev01"
+  public_key = "${file("key-pair.pem.pub")}"
+}
