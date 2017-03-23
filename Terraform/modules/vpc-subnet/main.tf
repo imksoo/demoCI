@@ -60,7 +60,7 @@ resource "aws_security_group" "sg_linux_default" {
   name        = "sg-linux-default"
   description = "sg-linux-default"
 
-  tag {
+  tags {
     Name = "sg-linux-default"
   }
 
@@ -142,7 +142,7 @@ resource "aws_security_group" "sg_windows_default" {
   name        = "sg-windows-default"
   description = "sg-windows-default"
 
-  tag {
+  tags {
     Name = "sg-windows-default"
   }
 
