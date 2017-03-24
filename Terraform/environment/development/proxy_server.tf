@@ -135,6 +135,7 @@ data "aws_ami" "ami_proxy_server" {
   owners = ["322934909423"] # MyAccount
 }
 
+/*
 resource "aws_instance" "proxy_server" {
   ami                         = "${data.aws_ami.ami_proxy_server.id}"
   instance_type               = "t2.nano"
@@ -150,6 +151,7 @@ resource "aws_instance" "proxy_server" {
     Role = "Proxy"
   }
 }
+*/
 
 resource "aws_security_group" "elb_proxy_server" {
   vpc_id = "${module.vpc_subnet.vpc_id}"
