@@ -76,7 +76,8 @@ resource "aws_iam_role_policy" "role_policy_ec2" {
     {
       "Action": [
         "ec2:*Tags",
-        "ec2:Describe*"
+        "ec2:Describe*",
+        "ec2:Run*"
       ],
       "Effect": "Allow",
       "Resource": "*"
