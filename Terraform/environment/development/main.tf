@@ -16,12 +16,10 @@ provider "aws" {
 
 module "vpc_subnet" {
   source = "../../modules/vpc-subnet"
-}
 
-/*
-resource "aws_key_pair" "keypair" {
-  key_name   = "KEY-piano-proxy-dev01"
-  public_key = "${file("key-pair.pem.pub")}"
+  vpc_name                 = "piano-proxy-dev01"
+  vpc_cidr                 = "10.123.0.0/16"
+  vpc_subnet_cidr_list     = ["10.123.1.0/24", "10.123.2.0/24", "10.123.3.0/24"]
+  availability_zone_list   = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  vpc_private_network_cidr = "10.0.0.0/8"
 }
-*/
-

@@ -51,6 +51,9 @@ dependencies:
 test:
   override:
     - |
+      # [TEST] Show git log
+      git log --name-only --pretty=format: ${CIRCLE_COMPARE_URL##*/}
+    - |
       # [TEST] AWS CLI is installed.
       which aws
     - |
