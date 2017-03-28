@@ -1,18 +1,20 @@
-variable "vpc_name" {
-  default = "testvpc"
-}
+variable "vpc_name" {}
 
-variable "vpc_cidr" {
-  default = "10.123.0.0/16"
-}
+variable "vpc_cidr" {}
 
 variable "vpc_subnet_cidr_list" {
-  default = ["10.123.1.0/24", "10.123.2.0/24", "10.123.3.0/24"]
+  type = "list"
 }
 
-variable "vpc_az_list" {
-  default = ["us-west-2a", "us-west-2b", "us-west-2c"]
+variable "availability_zone_list" {
+  type = "list"
 }
+
+variable "vpc_global_network_cidr" {
+  default = "0.0.0.0/0"
+}
+
+variable "vpc_private_network_cidr" {}
 
 variable "assign_public_ip" {
   default = "true"
