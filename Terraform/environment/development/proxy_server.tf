@@ -144,7 +144,7 @@ resource "aws_instance" "proxy_server" {
   iam_instance_profile   = "${aws_iam_instance_profile.instance_profile.name}"
   vpc_security_group_ids = ["${aws_security_group.proxy_server.id}", "${module.vpc_subnet.default_security_group_linux}"]
   subnet_id              = "${element(module.vpc_subnet.vpc_subnet_id_list, count.index)}"
-  count                  = 4
+  count                  = 0
 
   tags {
     Name = "Proxy#${count.index+1}"
