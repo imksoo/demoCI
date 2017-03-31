@@ -143,7 +143,7 @@ resource "aws_instance" "proxy_server" {
   //  key_name                    = "${aws_key_pair.keypair.key_name}"
   iam_instance_profile   = "${aws_iam_instance_profile.instance_profile.name}"
   vpc_security_group_ids = ["${aws_security_group.proxy_server.id}", "${module.vpc.default_security_group_linux}"]
-  subnet_id              = "${element(module.vpc.vpc_id_list, count.index)}"
+  subnet_id              = "${element(module.vpc.vpc_subnet_id_list, count.index)}"
   count                  = 0
 
   tags {
