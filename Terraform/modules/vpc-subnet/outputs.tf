@@ -23,5 +23,5 @@ output "vpc_flow_log_group_arn" {
 }
 
 output "route_table" {
-  value = "${aws_route_table.route_table.route_table_id}"
+  value = "${aws_route_table.route_table.id}"
 }
