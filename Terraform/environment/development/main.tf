@@ -18,8 +18,8 @@ module "vpc_subnet" {
   source = "../../modules/vpc-subnet"
 
   vpc_name                 = "piano-proxy-dev01"
-  vpc_cidr                 = "10.123.0.0/16"
-  vpc_subnet_cidr_list     = ["10.123.1.0/24", "10.123.2.0/24", "10.123.3.0/24"]
+  vpc_cidr                 = "10.23.0.0/22"
+  vpc_subnet_cidr_list     = ["10.23.0.0/24", "10.23.1.0/24", "10.23.2.0/24"]
   availability_zone_list   = ["us-west-2a", "us-west-2b", "us-west-2c"]
   vpc_private_network_cidr = "10.0.0.0/8"
 }
