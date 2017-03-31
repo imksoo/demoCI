@@ -88,7 +88,7 @@ EOF
 }
 
 resource "aws_security_group" "proxy_server" {
-  vpc_id = "${module.vpc_subnet.vpc_id}"
+  vpc_id = "${module.vpc.vpc_id}"
 
   tags {
     Name = "proxy_server"
@@ -142,8 +142,8 @@ resource "aws_instance" "proxy_server" {
 
   //  key_name                    = "${aws_key_pair.keypair.key_name}"
   iam_instance_profile   = "${aws_iam_instance_profile.instance_profile.name}"
-  vpc_security_group_ids = ["${aws_security_group.proxy_server.id}", "${module.vpc_subnet.default_security_group_linux}"]
-  subnet_id              = "${element(module.vpc_subnet.vpc_subnet_id_list, count.index)}"
+  vpc_security_group_ids = ["${aws_security_group.proxy_server.id}", "${module.vpc.default_security_group_linux}"]
+  subnet_id              = "${element(module.vpc.vpc_id_list, count.index)}"
   count                  = 0
 
   tags {
@@ -153,7 +153,7 @@ resource "aws_instance" "proxy_server" {
 }
 
 resource "aws_security_group" "elb_proxy_server" {
-  vpc_id = "${module.vpc_subnet.vpc_id}"
+  vpc_id = "${module.vpc.vpc_id}"
 
   tags {
     Name = "elb_proxy_server"
@@ -179,7 +179,7 @@ resource "aws_security_group" "elb_proxy_server" {
 /*
 resource "aws_elb" "elb_proxy_server" {
   name            = "elb-proxy-server"
-  subnets         = ["${module.vpc_subnet.vpc_subnet_id_list}"]
+  subnets         = ["${module.vpc.vpc_id_list}"]
   security_groups = ["${aws_security_group.elb_proxy_server.id}"]
 
   cross_zone_load_balancing   = true
