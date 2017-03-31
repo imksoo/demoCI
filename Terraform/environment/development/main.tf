@@ -14,7 +14,7 @@ provider "aws" {
   profile = "piano-proxy-dev01"
 }
 
-module "vpc_subnet" {
+module "vpc" {
   source = "../../modules/vpc-subnet"
 
   vpc_name                 = "piano-proxy-dev01"
