@@ -8,3 +8,9 @@ resource "aws_vpc_peering_connection" "piano-infra-dev01" {
     Name = "piano-infra-dev01"
   }
 }
+
+resource "aws_route" "piano-infra-dev01" {
+  route_table_id            = "${module.vpc.route_table}"
+  destination_cidr_block    = "10.23.12.0/22"
+  vpc_peering_connection_id = "${aws_vpc_peering_connection_accepter.piano-infra-dev01.id}"
+}
