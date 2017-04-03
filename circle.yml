@@ -2,6 +2,7 @@ general:
   branches:
     only:
       - master
+      - develop
       - /environment\/.*/
 
 machine:
@@ -77,7 +78,7 @@ test:
         "environment/production")
           [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test ) || true
           ;;
-        "master")
+        "master" | "develop")
           [ -d Terraform/environment/development ] && ( cd Terraform/environment/development ; make test ) || true
           [ -d Terraform/environment/staging ]     && ( cd Terraform/environment/staging     ; make test ) || true
           [ -d Terraform/environment/production ]  && ( cd Terraform/environment/production  ; make test ) || true
@@ -90,6 +91,12 @@ deployment:
     commands:
       - |
         # [DEPLOY] branch master does not any deployment.
+        echo "Test stage is all succeeded."
+  develop:
+    branch: develop
+    commands:
+      - |
+        # [DEPLOY] branch develop does not any deployment.
         echo "Test stage is all succeeded."
   production:
     branch: environment/production

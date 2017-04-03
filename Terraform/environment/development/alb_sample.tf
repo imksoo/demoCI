@@ -1,6 +1,6 @@
 /* AWS ALB(Application Load Balancer) cannot contains forward proxy servers.
 resource "aws_security_group" "alb_proxy_server" {
-  vpc_id = "${module.vpc_subnet.vpc_id}"
+  vpc_id = "${module.vpc.vpc_id}"
 
   tags {
     Name = "alb_proxy_server"
@@ -26,7 +26,7 @@ resource "aws_security_group" "alb_proxy_server" {
 resource "aws_alb" "alb_proxy_server" {
   internal        = false
   name            = "alb-proxy-server"
-  subnets         = ["${module.vpc_subnet.vpc_subnet_id_list}"]
+  subnets         = ["${module.vpc.vpc_id_list}"]
   security_groups = ["${aws_security_group.alb_proxy_server.id}"]
 
   tags {
@@ -49,7 +49,7 @@ resource "aws_alb_target_group" "alb_target_group_proxy_server" {
   name     = "alb-tg-proxy-server"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = "${module.vpc_subnet.vpc_id}"
+  vpc_id   = "${module.vpc.vpc_id}"
 }
 
 resource "aws_alb_target_group_attachment" "alb_target_group_attachement_proxy_server" {

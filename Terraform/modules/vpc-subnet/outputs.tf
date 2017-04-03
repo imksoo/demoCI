@@ -21,3 +21,7 @@ output "vpn_gateway_id" {
 output "vpc_flow_log_group_arn" {
   value = "${aws_cloudwatch_log_group.vpc_flow_log_group.arn}"
 }
+
+output "route_table" {
+  value = "${aws_route_table.route_table.id}"
+}
