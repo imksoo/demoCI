@@ -1,10 +1,10 @@
 resource "aws_security_group" "sg_linux_default" {
   vpc_id      = "${aws_vpc.vpc.id}"
-  name        = "linux-default"
-  description = "linux-default"
+  name        = "SG-linux-default"
+  description = "SG-linux-default"
 
   tags {
-    Name = "linux-default"
+    Name = "SG-linux-default"
   }
 
   # Inbound ICMP (ping, traceroute, etc / only private networks)
@@ -82,11 +82,11 @@ resource "aws_security_group" "sg_linux_default" {
 
 resource "aws_security_group" "sg_windows_default" {
   vpc_id      = "${aws_vpc.vpc.id}"
-  name        = "windows-default"
-  description = "windows-default"
+  name        = "SG-windows-default"
+  description = "SG-windows-default"
 
   tags {
-    Name = "windows-default"
+    Name = "SG-windows-default"
   }
 
   # Inbound ICMP (ping, traceroute, etc / only private networks)
