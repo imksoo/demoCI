@@ -14,7 +14,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "../../modules/vpc-subnet"
+  source = "git::https://CircleCI@github.com/imksoo/demoCI-mgmt-infra//Terraform/modules/vpc-subnet"
 
   vpc_name                 = "piano-proxy-dev01"
   vpc_cidr                 = "10.23.0.0/22"
