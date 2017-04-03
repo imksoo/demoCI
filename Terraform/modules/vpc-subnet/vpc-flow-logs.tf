@@ -1,44 +1,39 @@
-resource "aws_iam_role" "vpc_flow_logs_role" {
-  name_prefix = "ROLE-flow-log-${var.vpc_name}"
+data "aws_iam_policy_document" "vpc_flow_logs_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "vpc-flow-logs.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
+    principals {
+      type        = "Service"
+      identifiers = ["vpc-flow-logs.amazonaws.com"]
     }
-  ]
+  }
 }
-EOF
+
+resource "aws_iam_role" "vpc_flow_logs_role" {
+  name_prefix        = "ROLE-flow-log-${var.vpc_name}"
+  assume_role_policy = "${data.aws_iam_policy_document.vpc_flow_logs_role.json}"
+}
+
+data "aws_iam_policy_document" "vpc_flow_logs_role_policy" {
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+    ]
+
+    effect    = "Allow"
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_role_policy" "vpc_flow_logs_role_policy" {
   role        = "${aws_iam_role.vpc_flow_logs_role.id}"
   name_prefix = "POLICY-flow-log-${var.vpc_name}"
 
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogGroups",
-        "logs:DescribeLogStreams"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+  policy = "${data.aws_iam_policy_document.vpc_flow_logs_role_policy.json}"
 }
 
 resource "aws_cloudwatch_log_group" "vpc_flow_log_group" {
