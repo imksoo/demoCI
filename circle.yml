@@ -10,7 +10,7 @@ machine:
   environment:
     PATH: $HOME/.local/bin:$PATH
     AWS_DEFAULT_REGION: us-west-2
-    TERRAFORM_VERSION: 0.9.1
+    TERRAFORM_VERSION: 0.9.2
 
 dependencies:
   override:
